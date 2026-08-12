@@ -53,7 +53,7 @@ const credential = await navigator.credentials.create({
 const credentialId = Encode(credential.rawId);
 ```
 
-Final partial chunks are padded automatically. During decoding, unrecognized characters map to zero to match the source Go implementation.
+Final partial chunks are padded automatically. During decoding, invalid characters and overflowing chunks throw errors, matching Python's `base64.z85decode` behavior.
 
 ## License
 

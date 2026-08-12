@@ -46,10 +46,24 @@ test("matches Python base64 Z85 vectors", () => {
 	}
 });
 
-test("maps invalid characters to zero", () => {
-	for (const invalid of ["~", "\u0100"]) {
-		assert.deepEqual(Decode(`Hell${invalid}`), Decode("Hell0"));
-	}
+test("rejects invalid decode input like Python", () => {
+	assert.throws(
+		() => Decode("Hell~"),
+		new RangeError("bad z85 character at position 4"),
+	);
+	assert.throws(
+		() => Decode("Hello\u0100"),
+		new RangeError("string argument should contain only ASCII characters"),
+	);
+	assert.throws(
+		() => Decode("#####"),
+		new RangeError("z85 overflow in hunk starting at byte 0"),
+	);
+	assert.throws(
+		() => Decode("00000%nSc1"),
+		new RangeError("z85 overflow in hunk starting at byte 5"),
+	);
+	assert.throws(() => Decode(123), TypeError);
 });
 
 test("encodes and decodes two- and three-byte partial chunks", () => {

@@ -39,12 +39,21 @@ function Encode(data) {
 
 /**
  * Decodes Z85 into bytes, padding a final partial chunk automatically.
- * Unrecognized characters have value zero, matching the Go implementation.
+ * Invalid characters and overflowing chunks throw, matching Python's base64 module.
  *
  * @param {string} data
  * @returns {Uint8Array}
  */
 function Decode(data) {
+	if (typeof data !== "string") {
+		throw new TypeError("argument should be an ASCII string");
+	}
+	if ([...data].some((character) => character.charCodeAt(0) > 0x7f)) {
+		throw new RangeError(
+			"string argument should contain only ASCII characters",
+		);
+	}
+
 	const padding = (5 - (data.length % 5)) % 5;
 	const result = new Uint8Array(Math.ceil(data.length / 5) * 4 - padding);
 
@@ -55,9 +64,16 @@ function Decode(data) {
 			const index = offset + i;
 			let digit = 84;
 			if (index < data.length) {
-				digit = decodeMap[data.charCodeAt(index)] ?? 0;
+				digit = decodeMap[data.charCodeAt(index)];
+				if (digit === 0 && data[index] !== "0") {
+					throw new RangeError(`bad z85 character at position ${index}`);
+				}
 			}
-			value = (value * 85 + digit) >>> 0;
+			value = value * 85 + digit;
+		}
+
+		if (value > 0xffffffff) {
+			throw new RangeError(`z85 overflow in hunk starting at byte ${offset}`);
 		}
 
 		const outputOffset = (offset / 5) * 4;
