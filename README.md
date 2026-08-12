@@ -2,25 +2,23 @@
 
 Dependency-free Z85 encoding and decoding for JavaScript.
 
-## Install directly from Git
+Ported from <https://github.com/tortxof/z85>.
 
-Once this project is hosted on GitHub, install it without publishing to npm:
+## Install from GitHub
 
 ```sh
-npm install git+ssh://git@github.com/tortxof/z85-js.git
-npm install git+ssh://git@github.com/tortxof/z85-js.git#v0.1.0
-# GitHub shorthand:
+npm install github:tortxof/z85-js
 npm install github:tortxof/z85-js#v0.1.0
 ```
 
-Prefer a tag or commit in applications for reproducible installs. No remote repository is created by this local project setup.
+Prefer a tag or commit in applications for reproducible installs.
 
 A dependency can also be declared directly:
 
 ```json
 {
   "dependencies": {
-    "z85-js": "git+ssh://git@github.com/tortxof/z85-js.git#v0.1.0"
+    "z85-js": "github:tortxof/z85-js#v0.1.0"
   }
 }
 ```
