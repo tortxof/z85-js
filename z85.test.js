@@ -30,10 +30,15 @@ test("decodes known values and partial chunks", () => {
 
 test("matches Python base64 Z85 vectors", () => {
 	for (const [hex, encoded] of [
+		["", ""],
 		["00000000", "00000"],
 		["ffffffff", "%nSc0"],
 		["00000001", "00001"],
+		["7fffffff", "Fb/MG"],
+		["80000000", "Fb/MH"],
 		["01020304", "0rJua"],
+		["010203040506", "0rJua1Qj"],
+		["01020304050607", "0rJua1Qkh"],
 		["000102030405060708090a0b0c0d0e0f", "009c61o!#m2NH?C3>iWS"],
 		["deadbeefcafebabe", "?MsJX+kO#^"],
 		["00", "00"],
