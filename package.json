@@ -1,0 +1,16 @@
+{
+  "name": "z85-js",
+  "version": "0.1.0",
+  "description": "Dependency-free Z85 encoding and decoding",
+  "type": "module",
+  "exports": "./z85.js",
+  "files": [
+    "z85.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "Unlicense"
+}
