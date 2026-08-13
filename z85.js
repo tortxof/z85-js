@@ -17,7 +17,7 @@ function Encode(data) {
 		? new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
 		: new Uint8Array(data);
 	const padding = (4 - (data.length % 4)) % 4;
-	const result = new Array(Math.ceil(data.length / 4) * 5);
+	const result = new Array(((data.length + padding) / 4) * 5);
 
 	for (let offset = 0; offset < data.length; offset += 4) {
 		let value =
